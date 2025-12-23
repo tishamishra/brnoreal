@@ -9,7 +9,7 @@ type ResourcesPageProps = {
 
 // SEO metadata with strict limits
 function generateResourcesMetadata(locale: string): Metadata {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://brnorealestate.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.brnorealestate.com";
   
   const enMetadata = {
     title: "Brno Real Estate Resources & Guides",

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { categoryOptions, getCategoryLabel } from "@/data/sample-data";
 import type { Listing } from "@/data/sample-data";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://brnorealestate.com";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.brnorealestate.com";
 
 // Homepage metadata
 export function getHomepageMetadata(locale: string): Metadata {

@@ -38,9 +38,9 @@ export default function RootLayout({
         <link rel="icon" type="image/png" href="https://ik.imagekit.io/affin/brno%20favicon.png?v=3" />
         <link rel="apple-touch-icon" href="https://ik.imagekit.io/affin/brno%20favicon.png?v=3" />
         {/* Hreflang tags for SEO - will be updated by locale layout */}
-        <link rel="alternate" hrefLang="en" href="https://brnorealestate.com/en" />
-        <link rel="alternate" hrefLang="cs" href="https://brnorealestate.com/cs" />
-        <link rel="alternate" hrefLang="x-default" href="https://brnorealestate.com/en" />
+        <link rel="alternate" hrefLang="en" href="https://www.brnorealestate.com/en" />
+        <link rel="alternate" hrefLang="cs" href="https://www.brnorealestate.com/cs" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.brnorealestate.com/en" />
       </head>
       <body
         className={`${headingFont.variable} ${bodyFont.variable} min-h-screen bg-site-canvas font-body text-neutral-950 antialiased`}

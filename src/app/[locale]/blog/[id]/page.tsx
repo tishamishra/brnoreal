@@ -49,7 +49,7 @@ function generateBlogMetadata(id: string, locale: string): Metadata {
   };
 
   const metadata = locale === "cs" ? csMetadata[id] : enMetadata[id];
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://brnorealestate.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.brnorealestate.com";
 
   return {
     title: metadata?.title || article.title,

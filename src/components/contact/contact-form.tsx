@@ -70,7 +70,15 @@ export function ContactForm({ listingTitle, listingId, location, propertyType }:
 
         if (error) {
           console.error("Error saving contact submission:", error);
+          console.error("Error details:", {
+            message: error.message,
+            code: error.code,
+            details: error.details,
+            hint: error.hint,
+          });
           // Still show success to user even if DB save fails
+        } else {
+          console.log("Contact submission saved successfully");
         }
       }
 

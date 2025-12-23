@@ -5,7 +5,7 @@ import { categoryOptions } from '@/data/sample-data';
 import { locales } from '@/lib/i18n/routing';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://brnorealestate.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.brnorealestate.com';
   
   // Get all listings
   const listings = await getAllListings();

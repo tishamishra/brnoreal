@@ -66,7 +66,17 @@ function detectLocale(request: NextRequest): string {
 }
 
 export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, hostname } = request.nextUrl;
+
+  // Redirect non-www to www (only in production)
+  const isProduction = process.env.NODE_ENV === 'production';
+  const productionDomain = 'brnorealestate.com';
+  
+  if (isProduction && hostname === productionDomain) {
+    const url = request.nextUrl.clone();
+    url.hostname = `www.${productionDomain}`;
+    return NextResponse.redirect(url, 301); // Permanent redirect
+  }
 
   // Skip proxy for:
   // - API routes
