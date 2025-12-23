@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.brnorealestate.com/sitemap.xml
+
+# Disallow admin panel from search engines
+Disallow: /admin/
+
+# Disallow API routes
+Disallow: /api/
+
