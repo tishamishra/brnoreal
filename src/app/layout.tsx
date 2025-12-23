@@ -20,8 +20,9 @@ export const metadata: Metadata = {
   title: "Brno Real Estate",
   description: "Premium residences, local expertise, and market intelligence for Brno and South Moravia.",
   icons: {
-    icon: "https://ik.imagekit.io/affin/brno%20favicon.png",
-    apple: "https://ik.imagekit.io/affin/brno%20favicon.png",
+    // Cache-busted favicon to avoid stale local builds
+    icon: "https://ik.imagekit.io/affin/brno%20favicon.png?v=2",
+    apple: "https://ik.imagekit.io/affin/brno%20favicon.png?v=2",
   },
 };
 
@@ -34,8 +35,8 @@ export default function RootLayout({
     <html lang="en" className="bg-site-canvas">
       <head>
         {/* Favicon */}
-        <link rel="icon" type="image/png" href="https://ik.imagekit.io/affin/brno%20favicon.png" />
-        <link rel="apple-touch-icon" href="https://ik.imagekit.io/affin/brno%20favicon.png" />
+        <link rel="icon" type="image/png" href="https://ik.imagekit.io/affin/brno%20favicon.png?v=2" />
+        <link rel="apple-touch-icon" href="https://ik.imagekit.io/affin/brno%20favicon.png?v=2" />
         {/* Hreflang tags for SEO - will be updated by locale layout */}
         <link rel="alternate" hrefLang="en" href="https://brnorealestate.com/en" />
         <link rel="alternate" hrefLang="cs" href="https://brnorealestate.com/cs" />
