@@ -133,7 +133,7 @@ export default function EditAgentPage() {
           specialties: specialties.length > 0 ? specialties : [],
           bio: formData.bio,
           image: formData.image || null,
-        })
+        } as any)
         .eq("id", agentId);
 
       if (updateError) {

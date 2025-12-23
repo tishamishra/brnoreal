@@ -125,7 +125,7 @@ export default function EditOfficePage() {
           phone: formData.phone,
           email: formData.email,
           services: services.length > 0 ? services : [],
-        })
+        } as any)
         .eq("id", officeId);
 
       if (updateError) {
