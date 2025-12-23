@@ -62,8 +62,8 @@ export default function EditListingPage() {
         // Load listing with agent_id from database
         const supabase = getSupabaseClient();
         if (supabase) {
-          const { data: listingData } = await supabase
-            .from("listings")
+          const { data: listingData } = await (supabase
+            .from("listings") as any)
             .select("*")
             .eq("slug", slug)
             .single();
@@ -92,7 +92,7 @@ export default function EditListingPage() {
                 postalCode: data.postalCode || "",
                 streetAddress: data.streetAddress || "",
                 features: data.features?.join(", ") || "",
-                agentId: listingData.agent_id || "",
+                agentId: (listingData as any)?.agent_id || "",
               });
             }
           }
@@ -138,8 +138,8 @@ export default function EditListingPage() {
       const supabase = getSupabaseClient();
       if (!supabase) return;
 
-      const { data } = await supabase
-        .from("agents")
+      const { data } = await (supabase
+        .from("agents") as any)
         .select("id, name, title")
         .order("name", { ascending: true });
 
@@ -193,7 +193,6 @@ export default function EditListingPage() {
 
       await listingsService.update(slug, {
         title: formData.title,
-        slug: formData.slug,
         location: formData.location,
         locationValue: formData.locationValue,
         category: formData.category,
@@ -204,14 +203,14 @@ export default function EditListingPage() {
         areaSqm: parseInt(formData.areaSqm) || 0,
         description: formData.description,
         highlights,
-        status: formData.status || undefined,
+        status: (formData.status === "featured" || formData.status === "new" || formData.status === "sold") ? formData.status : undefined,
         image: formData.image,
         coordinates,
         postalCode: formData.postalCode || undefined,
         streetAddress: formData.streetAddress || undefined,
         features: features.length > 0 ? features : undefined,
         agentId: formData.agentId || undefined,
-      });
+      } as any);
 
       router.push("/admin/listings");
     } catch (err: any) {

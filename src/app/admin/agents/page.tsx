@@ -84,7 +84,7 @@ export default function AgentsPage() {
         return;
       }
 
-      const { error } = await supabase.from("agents").delete().eq("id", id);
+      const { error } = await (supabase.from("agents") as any).delete().eq("id", id);
 
       if (error) {
         alert(`Failed to delete agent: ${error.message}`);

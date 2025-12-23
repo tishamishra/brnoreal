@@ -56,7 +56,7 @@ export function ContactForm({ listingTitle, listingId, location, propertyType }:
       const supabase = getSupabaseClient();
       
       if (supabase) {
-        const { error } = await supabase.from("contact_submissions").insert({
+        const { error } = await (supabase.from("contact_submissions") as any).insert({
           full_name: values.fullName,
           email: values.email,
           phone: values.phone || null,

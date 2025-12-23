@@ -46,7 +46,7 @@ export function FeaturedPropertiesPageContent({ locale }: FeaturedPropertiesPage
               {t.homeFeatured?.heading || "Featured Properties"}
             </h1>
             <p className="text-lg text-neutral-600">
-              {t.homeFeatured?.subheading || "Discover our handpicked selection of premium properties in Brno and South Moravia."}
+              {"Discover our handpicked selection of premium properties in Brno and South Moravia."}
             </p>
             {featuredListings.length > 0 && (
               <div className="flex flex-wrap items-center gap-6 pt-4 text-sm text-neutral-600">

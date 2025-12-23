@@ -2,6 +2,9 @@ import { listingsService } from '@/lib/supabase/services';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { listings as staticListings, type Listing } from '@/data/sample-data';
 
+// Re-export Listing type for convenience
+export type { Listing };
+
 // Get all listings with optional filters
 export async function getAllListings(filters?: {
   category?: string;

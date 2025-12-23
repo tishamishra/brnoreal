@@ -226,8 +226,8 @@ export const listingsService = {
       }
     }
 
-    const { data, error } = await supabase
-      .from('listings')
+    const { data, error } = await (supabase
+      .from('listings') as any)
       .update(updateData)
       .eq('slug', slug)
       .select()

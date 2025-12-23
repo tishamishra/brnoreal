@@ -82,7 +82,7 @@ export default function OfficesPage() {
         return;
       }
 
-      const { error } = await supabase.from("offices").delete().eq("id", id);
+      const { error } = await (supabase.from("offices") as any).delete().eq("id", id);
 
       if (error) {
         alert(`Failed to delete office: ${error.message}`);

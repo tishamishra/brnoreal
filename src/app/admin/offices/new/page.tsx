@@ -61,7 +61,7 @@ export default function NewOfficePage() {
         .map((s) => s.trim())
         .filter((s) => s.length > 0);
 
-      const { error: insertError } = await supabase.from("offices").insert({
+      const { error: insertError } = await (supabase.from("offices") as any).insert({
         name: formData.name,
         region: formData.region,
         address: formData.address,

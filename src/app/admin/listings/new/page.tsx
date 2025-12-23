@@ -54,8 +54,8 @@ export default function NewListingPage() {
       const supabase = getSupabaseClient();
       if (!supabase) return;
 
-      const { data } = await supabase
-        .from("agents")
+      const { data } = await (supabase
+        .from("agents") as any)
         .select("id, name, title")
         .order("name", { ascending: true });
 
@@ -127,14 +127,14 @@ export default function NewListingPage() {
         areaSqm: parseInt(formData.areaSqm) || 0,
         description: formData.description,
         highlights,
-        status: formData.status || undefined,
+        status: (formData.status === "featured" || formData.status === "new" || formData.status === "sold") ? formData.status : undefined,
         image: formData.image,
         coordinates,
         postalCode: formData.postalCode || undefined,
         streetAddress: formData.streetAddress || undefined,
         features: features.length > 0 ? features : undefined,
         agentId: formData.agentId || undefined,
-      });
+      } as any);
 
       router.push("/admin/listings");
     } catch (err: any) {

@@ -63,7 +63,7 @@ export default function NewAgentPage() {
         .map((s) => s.trim())
         .filter((s) => s.length > 0);
 
-      const { error: insertError } = await supabase.from("agents").insert({
+      const { error: insertError } = await (supabase.from("agents") as any).insert({
         name: formData.name,
         title: formData.title,
         region: formData.region,

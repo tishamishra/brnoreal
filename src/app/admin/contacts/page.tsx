@@ -80,8 +80,8 @@ export default function ContactsPage() {
         return;
       }
 
-      const { error } = await supabase
-        .from("contact_submissions")
+      const { error } = await (supabase
+        .from("contact_submissions") as any)
         .update({ status: newStatus })
         .eq("id", id);
 
