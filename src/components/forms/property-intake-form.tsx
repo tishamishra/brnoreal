@@ -96,7 +96,7 @@ export function PropertyIntakeForm() {
     <div className="rounded-3xl border border-soft bg-white p-8 shadow-[0_25px_60px_-45px_rgba(0,0,0,0.55)]">
       <form className="grid gap-5 md:grid-cols-2" onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label className="text-xs uppercase tracking-[0.3em] text-neutral-500">
+          <label className="text-xs uppercase tracking-[0.3em] text-neutral-500" suppressHydrationWarning>
             {t.forms.property.owner}
             <input
               {...register("ownerName")}
@@ -110,7 +110,7 @@ export function PropertyIntakeForm() {
         </div>
 
         <div>
-          <label className="text-xs uppercase tracking-[0.3em] text-neutral-500">
+          <label className="text-xs uppercase tracking-[0.3em] text-neutral-500" suppressHydrationWarning>
             {t.forms.property.email}
             <input
               {...register("email")}
@@ -125,7 +125,7 @@ export function PropertyIntakeForm() {
         </div>
 
         <div>
-          <label className="text-xs uppercase tracking-[0.3em] text-neutral-500">
+          <label className="text-xs uppercase tracking-[0.3em] text-neutral-500" suppressHydrationWarning>
             {t.forms.property.phone}
             <input
               {...register("phone")}

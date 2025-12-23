@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "react-feather";
 import { LanguageSwitcher } from "@/components/language/language-switcher";
 import { useTranslations } from "@/components/providers/locale-provider";
@@ -21,12 +22,17 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-transparent bg-white/90 shadow-sm shadow-black/5 backdrop-blur">
       <div className="container flex h-16 items-center justify-between gap-4 sm:h-20 sm:gap-6">
-        <LocaleLink href="/" className="flex items-center gap-2 sm:gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-soft bg-white shadow-sm shadow-black/10 sm:h-12 sm:w-12">
-            <span className="font-heading text-lg font-semibold tracking-tight text-neutral-900 sm:text-xl">
-              BR
-            </span>
-          </span>
+        <LocaleLink href="/" className="flex items-center gap-1.5 sm:gap-2">
+          <div className="relative h-24 w-24 sm:h-28 sm:w-28">
+            <Image
+              src="https://ik.imagekit.io/affin/brno%20real%20estate%20logo"
+              alt={t.header.brand}
+              fill
+              className="object-contain"
+              sizes="(max-width: 640px) 96px, 112px"
+              priority
+            />
+          </div>
           <div className="flex flex-col leading-tight">
             <span className="font-heading text-base font-semibold uppercase tracking-widest text-neutral-950 sm:text-lg">
               {t.header.brand}

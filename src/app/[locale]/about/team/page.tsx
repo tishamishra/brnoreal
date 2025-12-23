@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { LocaleLink } from "@/components/locale-link";
 import {
   EnvelopeIcon,
   PhoneIcon,
@@ -231,12 +231,12 @@ export default function TeamPage() {
               Connect with our team to discuss your property needs. We're here to guide you through every step.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <Link href="/contact" className="btn-primary">
+              <LocaleLink href="/contact" className="btn-primary">
                 Get in Touch
-              </Link>
-              <Link href="/services" className="btn-secondary">
+              </LocaleLink>
+              <LocaleLink href="/services" className="btn-secondary">
                 Discover Services
-              </Link>
+              </LocaleLink>
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { LocaleLink } from "@/components/locale-link";
 import { useTranslations } from "@/components/providers/locale-provider";
 
 export function AboutSection() {
@@ -22,12 +22,12 @@ export function AboutSection() {
             ))}
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/about/team" className="btn-primary text-sm">
+            <LocaleLink href="/about/team" className="btn-primary text-sm">
               {t.homeAbout.ctaPrimary}
-            </Link>
-            <Link href="/services" className="btn-secondary text-sm">
+            </LocaleLink>
+            <LocaleLink href="/services" className="btn-secondary text-sm">
               {t.homeAbout.ctaSecondary}
-            </Link>
+            </LocaleLink>
           </div>
         </div>
         <div className="relative aspect-[4/5] overflow-hidden rounded-[36px] border border-soft bg-neutral-200 shadow-[0_40px_80px_-50px_rgba(15,23,42,0.4)]">
