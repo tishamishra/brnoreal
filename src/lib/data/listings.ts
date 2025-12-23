@@ -45,7 +45,15 @@ export async function getListingBySlug(slug: string): Promise<Listing | null> {
 export async function getFeaturedListings(limit?: number): Promise<Listing[]> {
   if (isSupabaseConfigured()) {
     try {
-      return await listingsService.getFeatured(limit);
+      const featured = await listingsService.getFeatured(limit);
+
+      // If Supabase is empty, fall back to static data so the homepage hero
+      // always has something to show (e.g., on fresh environments).
+      if (!featured || featured.length === 0) {
+        return getStaticFeaturedListings(limit);
+      }
+
+      return featured;
     } catch (error) {
       console.error('Error fetching from Supabase, falling back to static data:', error);
       return getStaticFeaturedListings(limit);
