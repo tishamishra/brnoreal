@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "@/components/providers/locale-provider";
-import Link from "next/link";
+import { LocaleLink } from "@/components/locale-link";
 
 export default function DoNotSellPage() {
   const t = useTranslations();
@@ -158,9 +158,9 @@ export default function DoNotSellPage() {
                 </h2>
                 <p className="mt-4 leading-7 text-neutral-600">
                   For more detailed information about our privacy practices, please review our{" "}
-                  <Link href="/privacy" className="font-semibold text-[color:var(--brand-600)] hover:underline">
+                  <LocaleLink href="/privacy" className="font-semibold text-[color:var(--brand-600)] hover:underline">
                     Privacy Notice
-                  </Link>
+                  </LocaleLink>
                   .
                 </p>
               </div>
@@ -171,5 +171,4 @@ export default function DoNotSellPage() {
     </div>
   );
 }
-
 

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { LocaleLink } from "@/components/locale-link";
 import { useTranslations } from "@/components/providers/locale-provider";
 import { destinations } from "@/data/destinations";
 
@@ -72,13 +72,13 @@ export default function SitemapPage() {
               <ul className="mt-6 grid gap-3 md:grid-cols-2">
                 {mainPages.map((page) => (
                   <li key={page.href}>
-                    <Link
+                    <LocaleLink
                       href={page.href}
                       className="flex items-center gap-2 text-neutral-600 transition hover:text-[color:var(--brand-600)]"
                     >
                       <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--brand-500)]" />
                       <span>{page.label}</span>
-                    </Link>
+                    </LocaleLink>
                   </li>
                 ))}
               </ul>
@@ -92,13 +92,13 @@ export default function SitemapPage() {
               <ul className="mt-6 grid gap-3 md:grid-cols-2">
                 {propertyCategories.map((category) => (
                   <li key={category.href}>
-                    <Link
+                    <LocaleLink
                       href={category.href}
                       className="flex items-center gap-2 text-neutral-600 transition hover:text-[color:var(--brand-600)]"
                     >
                       <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--brand-500)]" />
                       <span>{category.label}</span>
-                    </Link>
+                    </LocaleLink>
                   </li>
                 ))}
               </ul>
@@ -112,13 +112,13 @@ export default function SitemapPage() {
               <ul className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {destinationPages.map((destination) => (
                   <li key={destination.href}>
-                    <Link
+                    <LocaleLink
                       href={destination.href}
                       className="flex items-center gap-2 text-neutral-600 transition hover:text-[color:var(--brand-600)]"
                     >
                       <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--brand-500)]" />
                       <span>{destination.label}</span>
-                    </Link>
+                    </LocaleLink>
                   </li>
                 ))}
               </ul>
@@ -132,13 +132,13 @@ export default function SitemapPage() {
               <ul className="mt-6 grid gap-3 md:grid-cols-2">
                 {legalPages.map((page) => (
                   <li key={page.href}>
-                    <Link
+                    <LocaleLink
                       href={page.href}
                       className="flex items-center gap-2 text-neutral-600 transition hover:text-[color:var(--brand-600)]"
                     >
                       <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--brand-500)]" />
                       <span>{page.label}</span>
-                    </Link>
+                    </LocaleLink>
                   </li>
                 ))}
               </ul>
@@ -154,19 +154,19 @@ export default function SitemapPage() {
                   <h3 className="mb-3 font-semibold text-neutral-900">Get Started</h3>
                   <ul className="space-y-2 text-sm text-neutral-600">
                     <li>
-                      <Link href="/listings" className="hover:text-[color:var(--brand-600)]">
+                      <LocaleLink href="/listings" className="hover:text-[color:var(--brand-600)]">
                         Search Properties
-                      </Link>
+                      </LocaleLink>
                     </li>
                     <li>
-                      <Link href="/contact" className="hover:text-[color:var(--brand-600)]">
+                      <LocaleLink href="/contact" className="hover:text-[color:var(--brand-600)]">
                         Contact Us
-                      </Link>
+                      </LocaleLink>
                     </li>
                     <li>
-                      <Link href="/services" className="hover:text-[color:var(--brand-600)]">
+                      <LocaleLink href="/services" className="hover:text-[color:var(--brand-600)]">
                         Our Services
-                      </Link>
+                      </LocaleLink>
                     </li>
                   </ul>
                 </div>
@@ -174,19 +174,19 @@ export default function SitemapPage() {
                   <h3 className="mb-3 font-semibold text-neutral-900">Learn More</h3>
                   <ul className="space-y-2 text-sm text-neutral-600">
                     <li>
-                      <Link href="/about/team" className="hover:text-[color:var(--brand-600)]">
+                      <LocaleLink href="/about/team" className="hover:text-[color:var(--brand-600)]">
                         Meet the Team
-                      </Link>
+                      </LocaleLink>
                     </li>
                     <li>
-                      <Link href="/featured" className="hover:text-[color:var(--brand-600)]">
+                      <LocaleLink href="/featured" className="hover:text-[color:var(--brand-600)]">
                         Featured Properties
-                      </Link>
+                      </LocaleLink>
                     </li>
                     <li>
-                      <Link href="/all-properties" className="hover:text-[color:var(--brand-600)]">
+                      <LocaleLink href="/all-properties" className="hover:text-[color:var(--brand-600)]">
                         Browse All Properties
-                      </Link>
+                      </LocaleLink>
                     </li>
                   </ul>
                 </div>

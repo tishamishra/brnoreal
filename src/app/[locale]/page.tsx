@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Image from "next/image";
 import { LocaleLink } from "@/components/locale-link";
 import { HeroSearch } from "@/components/hero/hero-search";
@@ -10,7 +10,10 @@ import { TopDestinationsSection } from "@/components/home/top-destinations";
 import { FeaturedPropertiesSection } from "@/components/home/featured-properties";
 import { AboutSection } from "@/components/home/about-section";
 import { getFeaturedListings } from "@/lib/data/listings";
-import type { Listing } from "@/data/sample-data";
+import type { Listing } from "@/lib/data/listings";
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
 
 // Fallback placeholder image
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80";
@@ -54,7 +57,9 @@ export default function Home() {
                 </p>
               </div>
 
-              <HeroSearch />
+              <Suspense fallback={<div className="h-32 animate-pulse rounded-2xl bg-neutral-100" />}>
+                <HeroSearch />
+              </Suspense>
             </div>
 
             {/* Featured Property Card - Right Side */}
