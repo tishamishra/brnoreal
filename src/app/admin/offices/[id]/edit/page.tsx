@@ -62,13 +62,21 @@ export default function EditOfficePage() {
       }
 
       if (data) {
+        const officeData = data as {
+          name?: string;
+          region?: string;
+          address?: string;
+          phone?: string;
+          email?: string;
+          services?: string[];
+        };
         setFormData({
-          name: data.name || "",
-          region: data.region || "",
-          address: data.address || "",
-          phone: data.phone || "",
-          email: data.email || "",
-          services: data.services?.join(", ") || "",
+          name: officeData.name || "",
+          region: officeData.region || "",
+          address: officeData.address || "",
+          phone: officeData.phone || "",
+          email: officeData.email || "",
+          services: officeData.services?.join(", ") || "",
         });
       }
     } catch (err: any) {

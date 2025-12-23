@@ -64,15 +64,25 @@ export default function EditAgentPage() {
       }
 
       if (data) {
+        const agentData = data as {
+          name?: string;
+          title?: string;
+          region?: string;
+          email?: string;
+          phone?: string;
+          specialties?: string[];
+          bio?: string;
+          image?: string | null;
+        };
         setFormData({
-          name: data.name || "",
-          title: data.title || "",
-          region: data.region || "",
-          email: data.email || "",
-          phone: data.phone || "",
-          specialties: data.specialties?.join(", ") || "",
-          bio: data.bio || "",
-          image: data.image || "",
+          name: agentData.name || "",
+          title: agentData.title || "",
+          region: agentData.region || "",
+          email: agentData.email || "",
+          phone: agentData.phone || "",
+          specialties: agentData.specialties?.join(", ") || "",
+          bio: agentData.bio || "",
+          image: agentData.image || "",
         });
       }
     } catch (err: any) {
