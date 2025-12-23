@@ -19,7 +19,6 @@ const bodyFont = Source_Sans_3({
 export const metadata: Metadata = {
   title: "Brno Real Estate",
   description: "Premium residences, local expertise, and market intelligence for Brno and South Moravia.",
-  // Icons are handled by Next.js file conventions (icon.tsx and apple-icon.tsx)
 };
 
 export default function RootLayout({
