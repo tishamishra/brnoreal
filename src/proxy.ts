@@ -65,10 +65,10 @@ function detectLocale(request: NextRequest): string {
   return defaultLocale;
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip middleware for:
+  // Skip proxy for:
   // - API routes
   // - Static files (_next, images, etc.)
   // - Admin routes (keep as-is)
@@ -96,12 +96,12 @@ export function middleware(request: NextRequest) {
   // Detect preferred locale
   const locale = detectLocale(request);
 
-  // Redirect to locale-prefixed path
-  const newUrl = request.nextUrl.clone();
-  newUrl.pathname = `/${locale}${pathname === '/' ? '' : pathname}`;
+  // Redirect to locale-prefixed path (using absolute URL)
+  const url = request.nextUrl.clone();
+  url.pathname = `/${locale}${pathname === '/' ? '' : pathname}`;
 
   // Set locale cookie
-  const response = NextResponse.redirect(newUrl);
+  const response = NextResponse.redirect(url);
   response.cookies.set('NEXT_LOCALE', locale, {
     path: '/',
     maxAge: 60 * 60 * 24 * 365, // 1 year
@@ -123,5 +123,4 @@ export const config = {
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 };
-
 

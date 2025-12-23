@@ -122,18 +122,20 @@ export default function EditAgentPage() {
         .map((s) => s.trim())
         .filter((s) => s.length > 0);
 
+      const updateData: Record<string, unknown> = {
+        name: formData.name,
+        title: formData.title,
+        region: formData.region,
+        email: formData.email,
+        phone: formData.phone,
+        specialties: specialties.length > 0 ? specialties : [],
+        bio: formData.bio,
+        image: formData.image || null,
+      };
+
       const { error: updateError } = await supabase
         .from("agents")
-        .update({
-          name: formData.name,
-          title: formData.title,
-          region: formData.region,
-          email: formData.email,
-          phone: formData.phone,
-          specialties: specialties.length > 0 ? specialties : [],
-          bio: formData.bio,
-          image: formData.image || null,
-        } as any)
+        .update(updateData)
         .eq("id", agentId);
 
       if (updateError) {

@@ -116,16 +116,18 @@ export default function EditOfficePage() {
         .map((s) => s.trim())
         .filter((s) => s.length > 0);
 
+      const updateData: Record<string, unknown> = {
+        name: formData.name,
+        region: formData.region,
+        address: formData.address,
+        phone: formData.phone,
+        email: formData.email,
+        services: services.length > 0 ? services : [],
+      };
+
       const { error: updateError } = await supabase
         .from("offices")
-        .update({
-          name: formData.name,
-          region: formData.region,
-          address: formData.address,
-          phone: formData.phone,
-          email: formData.email,
-          services: services.length > 0 ? services : [],
-        } as any)
+        .update(updateData)
         .eq("id", officeId);
 
       if (updateError) {
