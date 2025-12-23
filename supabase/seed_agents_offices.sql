@@ -70,3 +70,4 @@ SELECT 'Agents inserted:' as info, COUNT(*) as count FROM agents
 UNION ALL
 SELECT 'Offices inserted:', COUNT(*) FROM offices;
 
+

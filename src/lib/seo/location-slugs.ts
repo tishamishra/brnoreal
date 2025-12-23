@@ -55,3 +55,4 @@ export function getLocationSlug(location: string, locale: string): string | unde
   return locationSlugMap[location]?.[locale === "cs" ? "cs" : "en"];
 }
 
+

@@ -18,3 +18,4 @@ CREATE POLICY "Allow public delete on listings"
   ON listings FOR DELETE
   USING (true);
 
+

@@ -27,3 +27,4 @@ export function LocaleLink({ href, ...props }: LocaleLinkProps) {
   return <Link href={localizedHref} {...props} />;
 }
 
+

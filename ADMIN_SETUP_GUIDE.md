@@ -178,3 +178,4 @@ If you want the public `/agents` and `/offices` pages to show data from Supabase
 
 **After running the SQL migration, you'll have full CRUD management for agents, offices, and contact submissions! 🎉**
 
+

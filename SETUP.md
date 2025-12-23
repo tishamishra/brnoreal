@@ -73,3 +73,4 @@ Once Supabase is set up, you can:
 - **Connection errors**: Verify your project URL and anon key
 - **No data showing**: Run the seed SQL script to add sample data
 
+

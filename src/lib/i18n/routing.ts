@@ -35,3 +35,4 @@ export function getPathnameWithoutLocale(pathname: string): string {
   return removeLocaleFromPath(pathname);
 }
 
+

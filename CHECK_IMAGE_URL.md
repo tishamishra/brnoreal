@@ -56,3 +56,4 @@ Copy the image URL from Supabase and paste it in a new browser tab. If it doesn'
 **If still not working:**
 Share the image URL you're trying to use, and I can help add the domain to the config!
 
+

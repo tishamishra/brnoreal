@@ -159,3 +159,4 @@ Each blog post includes:
 - [x] Canonical URLs set
 - [x] Open Graph tags added
 
+

@@ -187,3 +187,4 @@ open https://app.supabase.com/project/lanktmrtqaisnbbdiaet
 
 **Your backend is ready! 🚀 Start adding your real property listings now!**
 
+

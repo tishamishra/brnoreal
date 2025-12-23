@@ -113,3 +113,4 @@ After adding your keys:
 2. Seed sample data (see `supabase/seed.sql`)
 3. Your app will automatically start using Supabase!
 
+

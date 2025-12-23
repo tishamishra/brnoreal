@@ -15,3 +15,4 @@ export function getCategoryUrl(category: string, locale: string): string {
   return `/${locale}/listings/category/${category}`;
 }
 
+

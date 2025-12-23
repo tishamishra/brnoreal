@@ -38,3 +38,4 @@ export function ResourcesPageContent({ locale }: ResourcesPageContentProps) {
   );
 }
 
+

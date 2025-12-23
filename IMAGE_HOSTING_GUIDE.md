@@ -171,3 +171,4 @@ Want me to add support for a specific image hosting service? Just tell me which 
 
 **TL;DR**: Yes, you can use images from anywhere, but you need to add each domain to `next.config.ts` first. Supabase Storage is recommended since you're already using Supabase!
 
+

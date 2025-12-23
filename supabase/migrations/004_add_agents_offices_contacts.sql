@@ -105,3 +105,4 @@ CREATE POLICY "Allow public delete on contact_submissions"
   ON contact_submissions FOR DELETE
   USING (true);
 
+

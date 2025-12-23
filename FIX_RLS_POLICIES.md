@@ -60,3 +60,4 @@ CREATE POLICY "Allow public delete on listings"
 
 For now, the public write access is fine for development/testing.
 
+

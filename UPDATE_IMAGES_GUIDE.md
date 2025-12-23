@@ -107,3 +107,4 @@ When adding new listings via admin panel:
 
 **After running the SQL update, all property images should display correctly! 🎉**
 
+

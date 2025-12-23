@@ -165,3 +165,4 @@ If you encounter issues:
 3. Check browser console for errors
 4. Verify locale is in URL path
 
+

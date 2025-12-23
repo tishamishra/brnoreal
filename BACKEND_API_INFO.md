@@ -91,3 +91,4 @@ Your app is already configured to use this backend! The Supabase client library 
 
 No additional backend setup needed! 🎉
 
+

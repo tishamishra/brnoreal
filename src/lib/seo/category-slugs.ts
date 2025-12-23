@@ -59,3 +59,4 @@ export function getSlugFromCategory(category: string, locale: string): string | 
   return categorySlugMap[category]?.[locale === "cs" ? "cs" : "en"];
 }
 
+

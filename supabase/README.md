@@ -78,3 +78,4 @@
 - **"Row Level Security" errors**: Check that RLS policies are created (included in migration)
 - **Connection issues**: Verify your project URL and anon key are correct
 
+

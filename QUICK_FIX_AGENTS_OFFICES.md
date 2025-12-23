@@ -155,3 +155,4 @@ Once tables are created, you can:
 
 **The error will disappear once you run the SQL migration! 🎉**
 
+
