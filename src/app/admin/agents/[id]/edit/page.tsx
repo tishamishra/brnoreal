@@ -122,7 +122,7 @@ export default function EditAgentPage() {
         .map((s) => s.trim())
         .filter((s) => s.length > 0);
 
-      const updateData: Record<string, unknown> = {
+      const updateData = {
         name: formData.name,
         title: formData.title,
         region: formData.region,
@@ -133,8 +133,8 @@ export default function EditAgentPage() {
         image: formData.image || null,
       };
 
-      const { error: updateError } = await supabase
-        .from("agents")
+      const { error: updateError } = await (supabase
+        .from("agents") as any)
         .update(updateData)
         .eq("id", agentId);
 
