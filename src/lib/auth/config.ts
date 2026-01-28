@@ -16,23 +16,26 @@ export const authOptions: NextAuthConfig = {
         const password =
           typeof credentials?.password === "string" ? credentials.password.trim() : undefined;
 
-        // Get admin credentials from Vercel environment variables
-        const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-        const adminPassword = process.env.ADMIN_PASSWORD?.trim();
+        // Get admin credentials from Vercel environment variables (NEXT_PUBLIC_ prefix)
+        const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL?.trim().toLowerCase();
+        const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD?.trim();
 
-        // Debug log (remove in production)
-        console.log("Login attempt:", { email, hasPassword: !!password, hasAdminEmail: !!adminEmail, hasAdminPassword: !!adminPassword });
+        console.log("Login attempt:", { 
+          email, 
+          hasPassword: !!password, 
+          hasAdminEmail: !!adminEmail, 
+          hasAdminPassword: !!adminPassword 
+        });
 
-        // Ensure password is set in Vercel
         if (!adminPassword) {
-          console.error("ADMIN_PASSWORD environment variable is not set");
+          console.error("NEXT_PUBLIC_ADMIN_PASSWORD not set");
           return null;
         }
 
-        // If ADMIN_EMAIL is set, require both email and password match
+        // Check credentials
         if (adminEmail) {
           if (email === adminEmail && password === adminPassword) {
-            console.log("Login success with email");
+            console.log("Login success");
             return {
               id: "admin",
               email: adminEmail,
@@ -41,9 +44,8 @@ export const authOptions: NextAuthConfig = {
             };
           }
         } else {
-          // If no ADMIN_EMAIL, allow password-only login
           if (password === adminPassword) {
-            console.log("Login success with password only");
+            console.log("Login success (password only)");
             return {
               id: "admin",
               email: "admin@brnorealestate.com",
@@ -53,7 +55,7 @@ export const authOptions: NextAuthConfig = {
           }
         }
 
-        console.log("Login failed - credentials mismatch");
+        console.log("Login failed");
         return null;
       },
     }),
@@ -64,7 +66,7 @@ export const authOptions: NextAuthConfig = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60, // 24 hours
+    maxAge: 24 * 60 * 60,
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -82,5 +84,5 @@ export const authOptions: NextAuthConfig = {
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET || "brno-real-estate-fallback-secret-key-32chars",
+  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET || "brno-fallback-secret-key-32characters",
 };

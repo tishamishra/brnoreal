@@ -72,7 +72,7 @@ export async function middleware(request: NextRequest) {
   // Protect admin routes (except login)
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
     // Must match the secret in src/lib/auth/config.ts
-    const secret = process.env.NEXTAUTH_SECRET || "brno-real-estate-fallback-secret-key-32chars";
+    const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET || "brno-fallback-secret-key-32characters";
 
     const token = await getToken({
       req: request,
