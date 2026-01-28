@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AdminLayout } from "@/components/admin/admin-layout";
-import { isAdminAuthenticated } from "@/lib/admin/auth";
+import { useIsAuthenticated } from "@/lib/auth/client";
 import { getAllListings } from "@/lib/data/listings";
 import { listingsService } from "@/lib/supabase/services";
 import type { Listing } from "@/data/sample-data";
@@ -16,14 +16,10 @@ export default function AllListingsPage() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isAuthenticated = useIsAuthenticated();
 
   useEffect(() => {
-    // Check authentication on client side only
-    const authenticated = isAdminAuthenticated();
-    setIsAuthenticated(authenticated);
-
-    if (!authenticated) {
+    if (!isAuthenticated) {
       router.push("/admin/login");
       return;
     }

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AdminLayout } from "@/components/admin/admin-layout";
-import { isAdminAuthenticated } from "@/lib/admin/auth";
+import { useIsAuthenticated } from "@/lib/auth/client";
 import { listingsService } from "@/lib/supabase/services";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import { categoryOptions, locationOptions, propertyTypeOptions } from "@/data/sample-data";
@@ -14,7 +14,7 @@ export default function NewListingPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isAuthenticated = useIsAuthenticated();
   const [agents, setAgents] = useState<Array<{ id: string; name: string; title: string }>>([]);
   const [formData, setFormData] = useState({
     title: "",
@@ -40,11 +40,7 @@ export default function NewListingPage() {
   });
 
   useEffect(() => {
-    // Check authentication on client side only
-    const authenticated = isAdminAuthenticated();
-    setIsAuthenticated(authenticated);
-
-    if (!authenticated) {
+    if (!isAuthenticated) {
       router.push("/admin/login");
       return;
     }

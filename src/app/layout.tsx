@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
+import { AuthWrapper } from "@/components/providers/auth-wrapper";
 
 const headingFont = Montserrat({
   subsets: ["latin"],
@@ -37,7 +38,7 @@ export default function RootLayout({
       <body
         className={`${headingFont.variable} ${bodyFont.variable} min-h-screen bg-site-canvas font-body text-neutral-950 antialiased`}
       >
-        {children}
+        <AuthWrapper>{children}</AuthWrapper>
       </body>
     </html>
   );

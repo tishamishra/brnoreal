@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminLayout } from "@/components/admin/admin-layout";
-import { isAdminAuthenticated } from "@/lib/admin/auth";
+import { useIsAuthenticated } from "@/lib/auth/client";
 import { Search, Mail, Phone, MapPin, FileText, Trash2, Check, Archive } from "react-feather";
 import { getSupabaseClient } from "@/lib/supabase/client";
 
@@ -25,13 +25,10 @@ export default function ContactsPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isAuthenticated = useIsAuthenticated();
 
   useEffect(() => {
-    const authenticated = isAdminAuthenticated();
-    setIsAuthenticated(authenticated);
-
-    if (!authenticated) {
+    if (!isAuthenticated) {
       router.push("/admin/login");
       return;
     }

@@ -5,27 +5,22 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { Home, Plus, List, LogOut, Settings, Users, Mail } from "react-feather";
 import { BuildingOfficeIcon } from "@heroicons/react/24/outline";
-import { isAdminAuthenticated, logoutAdmin } from "@/lib/admin/auth";
+import { useSession, logout } from "@/lib/auth/client";
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" && session?.user?.role === "admin";
 
   useEffect(() => {
-    // Only check authentication on client side
-    const authenticated = isAdminAuthenticated();
-    setIsAuthenticated(authenticated);
-    setIsChecking(false);
-
-    if (!authenticated) {
+    if (status === "unauthenticated") {
       router.push("/admin/login");
     }
-  }, [router]);
+  }, [status, router]);
 
   // Show nothing while checking (prevents hydration mismatch)
-  if (isChecking) {
+  if (status === "loading") {
     return null;
   }
 
@@ -55,7 +50,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             </h1>
           </div>
           <button
-            onClick={logoutAdmin}
+            onClick={() => logout()}
             className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-neutral-700 hover:bg-neutral-100"
           >
             <LogOut size={16} />

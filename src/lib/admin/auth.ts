@@ -1,22 +1,25 @@
 "use client";
 
-// Simple admin authentication check
+// Re-export NextAuth functions for backward compatibility
+export { useSession, logout, useIsAuthenticated } from "@/lib/auth/client";
+
+// Legacy functions - now use NextAuth
 export function isAdminAuthenticated(): boolean {
+  // This is now handled by NextAuth session
+  // Keep for backward compatibility but it won't work properly
+  // Use useIsAuthenticated() hook instead
   if (typeof window === "undefined") return false;
-  return sessionStorage.getItem("admin_authenticated") === "true";
+  return false; // Always return false, use NextAuth session instead
 }
 
 export function setAdminAuthenticated(value: boolean) {
-  if (typeof window === "undefined") return;
-  if (value) {
-    sessionStorage.setItem("admin_authenticated", "true");
-  } else {
-    sessionStorage.removeItem("admin_authenticated");
-  }
+  // No-op - authentication is now handled by NextAuth
+  // This function is kept for backward compatibility
 }
 
 export function logoutAdmin() {
-  setAdminAuthenticated(false);
-  window.location.href = "/admin/login";
+  // Use NextAuth logout instead
+  const { logout } = require("@/lib/auth/client");
+  logout();
 }
 

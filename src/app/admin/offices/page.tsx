@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AdminLayout } from "@/components/admin/admin-layout";
-import { isAdminAuthenticated } from "@/lib/admin/auth";
+import { useIsAuthenticated } from "@/lib/auth/client";
 import { Plus, Edit, Trash2, Search, Mail, Phone, MapPin } from "react-feather";
 import { getSupabaseClient } from "@/lib/supabase/client";
 
@@ -23,13 +23,10 @@ export default function OfficesPage() {
   const [offices, setOffices] = useState<Office[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isAuthenticated = useIsAuthenticated();
 
   useEffect(() => {
-    const authenticated = isAdminAuthenticated();
-    setIsAuthenticated(authenticated);
-
-    if (!authenticated) {
+    if (!isAuthenticated) {
       router.push("/admin/login");
       return;
     }

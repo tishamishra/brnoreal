@@ -2,29 +2,38 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock } from "react-feather";
+import { signIn } from "next-auth/react";
+import { Lock, Mail } from "react-feather";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // Simple password protection - in production, use proper authentication
-  const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin123";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    // Simple password check
-    if (password === ADMIN_PASSWORD) {
-      // Store session in localStorage
-      sessionStorage.setItem("admin_authenticated", "true");
-      router.push("/admin");
-    } else {
-      setError("Incorrect password");
+    try {
+      const result = await signIn("credentials", {
+        email: email || undefined, // Send email only if provided
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError("Incorrect email or password");
+        setLoading(false);
+      } else if (result?.ok) {
+        // Successful login - redirect to admin dashboard
+        router.push("/admin");
+        router.refresh();
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again.");
       setLoading(false);
     }
   };
@@ -40,11 +49,35 @@ export default function AdminLoginPage() {
             Admin Login
           </h1>
           <p className="mt-2 text-sm text-neutral-600">
-            Enter your password to access the admin panel
+            Enter your email and password to access the admin panel
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="email"
+              className="mb-2 block text-sm font-semibold text-neutral-700"
+            >
+              Email
+            </label>
+            <div className="relative">
+              <Mail
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400"
+              />
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-12 w-full rounded-lg border border-soft bg-white pl-12 pr-4 text-neutral-800 focus:border-[color:var(--brand-500)] focus:outline-none"
+                placeholder="Enter admin email"
+                autoFocus
+              />
+            </div>
+          </div>
+
           <div>
             <label
               htmlFor="password"
@@ -52,16 +85,21 @@ export default function AdminLoginPage() {
             >
               Password
             </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="h-12 w-full rounded-lg border border-soft bg-white px-4 text-neutral-800 focus:border-[color:var(--brand-500)] focus:outline-none"
-              placeholder="Enter admin password"
-              required
-              autoFocus
-            />
+            <div className="relative">
+              <Lock
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400"
+              />
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="h-12 w-full rounded-lg border border-soft bg-white pl-12 pr-4 text-neutral-800 focus:border-[color:var(--brand-500)] focus:outline-none"
+                placeholder="Enter admin password"
+                required
+              />
+            </div>
           </div>
 
           {error && (
@@ -80,7 +118,7 @@ export default function AdminLoginPage() {
         </form>
 
         <p className="mt-6 text-center text-xs text-neutral-500">
-          Default password: admin123 (change in .env.local)
+          Uses ADMIN_EMAIL and ADMIN_PASSWORD from Vercel Environment Variables
         </p>
       </div>
     </div>
