@@ -18,24 +18,26 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      const normalizedEmail = email.trim().toLowerCase();
-      const normalizedPassword = password.trim();
-
       const result = await signIn("credentials", {
-        email: normalizedEmail || undefined, // Send email only if provided
-        password: normalizedPassword,
+        email: email.trim().toLowerCase(),
+        password: password.trim(),
         redirect: false,
       });
 
+      console.log("SignIn result:", result);
+
       if (result?.error) {
-        setError(result.error === "CredentialsSignin" ? "Incorrect email or password" : "Login failed. Try again.");
+        setError("Incorrect email or password");
         setLoading(false);
       } else if (result?.ok) {
         // Successful login - redirect to admin dashboard
-        router.push("/admin");
-        router.refresh();
+        window.location.href = "/admin";
+      } else {
+        setError("Login failed. Please try again.");
+        setLoading(false);
       }
     } catch (err) {
+      console.error("Login error:", err);
       setError("An error occurred. Please try again.");
       setLoading(false);
     }
@@ -52,7 +54,7 @@ export default function AdminLoginPage() {
             Admin Login
           </h1>
           <p className="mt-2 text-sm text-neutral-600">
-            Enter your email and password to access the admin panel
+            Enter your credentials to access the admin panel
           </p>
         </div>
 
@@ -69,15 +71,15 @@ export default function AdminLoginPage() {
                 size={18}
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400"
               />
-            <input
+              <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-12 w-full rounded-lg border border-soft bg-white pl-12 pr-4 text-neutral-800 focus:border-[color:var(--brand-500)] focus:outline-none"
                 placeholder="Enter admin email"
-              autoFocus
-              required
+                autoFocus
+                required
               />
             </div>
           </div>
@@ -120,10 +122,7 @@ export default function AdminLoginPage() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-
-        <div className="mt-6 text-center text-xs text-neutral-500"></div>
       </div>
     </div>
   );
 }
-

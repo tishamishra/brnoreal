@@ -1,9 +1,10 @@
 import type { NextAuthConfig } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import Credentials from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthConfig = {
+  trustHost: true,
   providers: [
-    CredentialsProvider({
+    Credentials({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
@@ -11,24 +12,38 @@ export const authOptions: NextAuthConfig = {
       },
       async authorize(credentials) {
         const email =
-          typeof credentials?.email === "string" ? credentials.email : undefined;
+          typeof credentials?.email === "string" ? credentials.email.trim().toLowerCase() : undefined;
         const password =
-          typeof credentials?.password === "string" ? credentials.password : undefined;
+          typeof credentials?.password === "string" ? credentials.password.trim() : undefined;
 
         // Get admin credentials from Vercel environment variables
-        const adminEmail = process.env.ADMIN_EMAIL?.trim();
+        const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
         const adminPassword = process.env.ADMIN_PASSWORD?.trim();
-        
-        // Ensure both are set in Vercel
+
+        // Debug log (remove in production)
+        console.log("Login attempt:", { email, hasPassword: !!password, hasAdminEmail: !!adminEmail, hasAdminPassword: !!adminPassword });
+
+        // Ensure password is set in Vercel
         if (!adminPassword) {
-          console.error("ADMIN_PASSWORD environment variable is not set in Vercel");
+          console.error("ADMIN_PASSWORD environment variable is not set");
           return null;
         }
-        
-        if (!adminEmail) {
-          console.error("ADMIN_EMAIL environment variable is not set in Vercel");
-          // If email is not set, allow password-only login
-          if (password && password === adminPassword) {
+
+        // If ADMIN_EMAIL is set, require both email and password match
+        if (adminEmail) {
+          if (email === adminEmail && password === adminPassword) {
+            console.log("Login success with email");
+            return {
+              id: "admin",
+              email: adminEmail,
+              name: "Admin",
+              role: "admin",
+            };
+          }
+        } else {
+          // If no ADMIN_EMAIL, allow password-only login
+          if (password === adminPassword) {
+            console.log("Login success with password only");
             return {
               id: "admin",
               email: "admin@brnorealestate.com",
@@ -36,34 +51,9 @@ export const authOptions: NextAuthConfig = {
               role: "admin",
             };
           }
-          return null;
-        }
-        
-        // Verify both email and password against Vercel environment variables
-        if (
-          email &&
-          password &&
-          email.toLowerCase() === adminEmail.toLowerCase() &&
-          password === adminPassword
-        ) {
-          return {
-            id: "admin",
-            email: adminEmail,
-            name: "Admin",
-            role: "admin",
-          };
-        }
-        
-        // Fallback: If email not provided but password matches, allow login
-        if (!email && password === adminPassword) {
-          return {
-            id: "admin",
-            email: adminEmail,
-            name: "Admin",
-            role: "admin",
-          };
         }
 
+        console.log("Login failed - credentials mismatch");
         return null;
       },
     }),
@@ -79,25 +69,18 @@ export const authOptions: NextAuthConfig = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
+        token.role = (user as any).role;
         token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
+        (session.user as any).id = token.id as string;
+        (session.user as any).role = token.role as string;
       }
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET || (() => {
-    // Generate a fallback secret if not set (not recommended for production)
-    const fallbackSecret = "fallback-secret-change-in-production-" + Date.now();
-    if (process.env.NODE_ENV === "production") {
-      console.warn("⚠️ NEXTAUTH_SECRET not set in Vercel - using fallback (not secure!)");
-    }
-    return fallbackSecret;
-  })(),
+  secret: process.env.NEXTAUTH_SECRET || "brno-real-estate-fallback-secret-key-32chars",
 };
