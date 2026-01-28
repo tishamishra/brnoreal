@@ -10,6 +10,11 @@ export const authOptions: NextAuthConfig = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        const email =
+          typeof credentials?.email === "string" ? credentials.email : undefined;
+        const password =
+          typeof credentials?.password === "string" ? credentials.password : undefined;
+
         // Get admin credentials from Vercel environment variables
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPassword = process.env.ADMIN_PASSWORD;
@@ -23,7 +28,7 @@ export const authOptions: NextAuthConfig = {
         if (!adminEmail) {
           console.error("ADMIN_EMAIL environment variable is not set in Vercel");
           // If email is not set, allow password-only login
-          if (credentials?.password && credentials.password === adminPassword) {
+          if (password && password === adminPassword) {
             return {
               id: "admin",
               email: "admin@brnorealestate.com",
@@ -35,12 +40,7 @@ export const authOptions: NextAuthConfig = {
         }
         
         // Verify both email and password against Vercel environment variables
-        if (
-          credentials?.email &&
-          credentials?.password &&
-          credentials.email.toLowerCase() === adminEmail.toLowerCase() &&
-          credentials.password === adminPassword
-        ) {
+        if (email && password && email.toLowerCase() === adminEmail.toLowerCase() && password === adminPassword) {
           return {
             id: "admin",
             email: adminEmail,
@@ -50,7 +50,7 @@ export const authOptions: NextAuthConfig = {
         }
         
         // Fallback: If email not provided but password matches, allow login
-        if (!credentials?.email && credentials?.password === adminPassword) {
+        if (!email && password === adminPassword) {
           return {
             id: "admin",
             email: adminEmail,
