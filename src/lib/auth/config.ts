@@ -16,8 +16,8 @@ export const authOptions: NextAuthConfig = {
           typeof credentials?.password === "string" ? credentials.password : undefined;
 
         // Get admin credentials from Vercel environment variables
-        const adminEmail = process.env.ADMIN_EMAIL;
-        const adminPassword = process.env.ADMIN_PASSWORD;
+        const adminEmail = process.env.ADMIN_EMAIL?.trim();
+        const adminPassword = process.env.ADMIN_PASSWORD?.trim();
         
         // Ensure both are set in Vercel
         if (!adminPassword) {
@@ -40,7 +40,12 @@ export const authOptions: NextAuthConfig = {
         }
         
         // Verify both email and password against Vercel environment variables
-        if (email && password && email.toLowerCase() === adminEmail.toLowerCase() && password === adminPassword) {
+        if (
+          email &&
+          password &&
+          email.toLowerCase() === adminEmail.toLowerCase() &&
+          password === adminPassword
+        ) {
           return {
             id: "admin",
             email: adminEmail,

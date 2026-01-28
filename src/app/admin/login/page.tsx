@@ -18,14 +18,17 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
+      const normalizedEmail = email.trim().toLowerCase();
+      const normalizedPassword = password.trim();
+
       const result = await signIn("credentials", {
-        email: email || undefined, // Send email only if provided
-        password,
+        email: normalizedEmail || undefined, // Send email only if provided
+        password: normalizedPassword,
         redirect: false,
       });
 
       if (result?.error) {
-        setError("Incorrect email or password");
+        setError(result.error === "CredentialsSignin" ? "Incorrect email or password" : "Login failed. Try again.");
         setLoading(false);
       } else if (result?.ok) {
         // Successful login - redirect to admin dashboard
@@ -66,14 +69,15 @@ export default function AdminLoginPage() {
                 size={18}
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400"
               />
-              <input
+            <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-12 w-full rounded-lg border border-soft bg-white pl-12 pr-4 text-neutral-800 focus:border-[color:var(--brand-500)] focus:outline-none"
                 placeholder="Enter admin email"
-                autoFocus
+              autoFocus
+              required
               />
             </div>
           </div>
@@ -117,9 +121,7 @@ export default function AdminLoginPage() {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-xs text-neutral-500">
-          Uses ADMIN_EMAIL and ADMIN_PASSWORD from Vercel Environment Variables
-        </p>
+        <div className="mt-6 text-center text-xs text-neutral-500"></div>
       </div>
     </div>
   );
