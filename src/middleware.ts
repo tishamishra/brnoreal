@@ -71,13 +71,8 @@ export async function middleware(request: NextRequest) {
 
   // Protect admin routes (except login)
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-    // Get NEXTAUTH_SECRET from Vercel environment variables
-    // If not set, use a fallback (not recommended for production)
-    const secret = process.env.NEXTAUTH_SECRET || "fallback-secret-not-secure";
-    
-    if (!process.env.NEXTAUTH_SECRET && process.env.NODE_ENV === "production") {
-      console.warn("⚠️ NEXTAUTH_SECRET not set in Vercel - using fallback (not secure!)");
-    }
+    // Must match the secret in src/lib/auth/config.ts
+    const secret = process.env.NEXTAUTH_SECRET || "brno-real-estate-fallback-secret-key-32chars";
 
     const token = await getToken({
       req: request,
