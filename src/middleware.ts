@@ -1,5 +1,6 @@
-import { auth } from "@/lib/auth/nextauth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
 const locales = ['en', 'cs'];
 const defaultLocale = 'en';
@@ -13,7 +14,7 @@ function getLocale(pathname: string): string | null {
   return null;
 }
 
-function detectLocale(request: any): string {
+function detectLocale(request: NextRequest): string {
   const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
   if (cookieLocale && locales.includes(cookieLocale)) {
     return cookieLocale;
@@ -34,16 +35,25 @@ function detectLocale(request: any): string {
   return defaultLocale;
 }
 
-export default auth((req) => {
-  const { pathname, hostname } = req.nextUrl;
+export async function middleware(request: NextRequest) {
+  const { pathname, hostname } = request.nextUrl;
 
-  // Admin route protection
-  if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-    const isLoggedIn = !!req.auth?.user;
-    const isAdmin = (req.auth?.user as any)?.role === "admin";
+  // Admin route protection (except login page)
+  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
+    const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET || "brno-fallback-secret-key-32characters";
+    
+    const token = await getToken({ 
+      req: request, 
+      secret,
+      cookieName: process.env.NODE_ENV === "production" 
+        ? "__Secure-authjs.session-token" 
+        : "authjs.session-token"
+    });
 
-    if (!isLoggedIn || !isAdmin) {
-      const url = req.nextUrl.clone();
+    console.log("Middleware check:", { pathname, hasToken: !!token, role: token?.role });
+
+    if (!token || token.role !== "admin") {
+      const url = request.nextUrl.clone();
       url.pathname = "/admin/login";
       return NextResponse.redirect(url);
     }
@@ -65,7 +75,7 @@ export default auth((req) => {
   // Redirect non-www to www in production
   const isProduction = process.env.NODE_ENV === 'production';
   if (isProduction && hostname === 'brnorealestate.com') {
-    const url = req.nextUrl.clone();
+    const url = request.nextUrl.clone();
     url.hostname = 'www.brnorealestate.com';
     return NextResponse.redirect(url, 301);
   }
@@ -76,8 +86,8 @@ export default auth((req) => {
     return NextResponse.next();
   }
 
-  const locale = detectLocale(req);
-  const url = req.nextUrl.clone();
+  const locale = detectLocale(request);
+  const url = request.nextUrl.clone();
   url.pathname = `/${locale}${pathname === '/' ? '' : pathname}`;
 
   const response = NextResponse.redirect(url);
@@ -88,7 +98,7 @@ export default auth((req) => {
   });
 
   return response;
-});
+}
 
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
