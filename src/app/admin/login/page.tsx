@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Lock, Mail } from "react-feather";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,26 +17,27 @@ export default function AdminLoginPage() {
 
     try {
       const result = await signIn("credentials", {
-        email: email.trim().toLowerCase(),
+        email: email.trim(),
         password: password.trim(),
         redirect: false,
+        callbackUrl: "/admin",
       });
 
-      console.log("SignIn result:", result);
+      console.log("Login result:", result);
 
       if (result?.error) {
         setError("Incorrect email or password");
         setLoading(false);
       } else if (result?.ok) {
-        // Successful login - redirect to admin dashboard
+        // Force full page reload to /admin
         window.location.href = "/admin";
       } else {
-        setError("Login failed. Please try again.");
+        setError("Login failed");
         setLoading(false);
       }
     } catch (err) {
       console.error("Login error:", err);
-      setError("An error occurred. Please try again.");
+      setError("An error occurred");
       setLoading(false);
     }
   };
@@ -60,17 +59,11 @@ export default function AdminLoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-semibold text-neutral-700"
-            >
+            <label htmlFor="email" className="mb-2 block text-sm font-semibold text-neutral-700">
               Email
             </label>
             <div className="relative">
-              <Mail
-                size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400"
-              />
+              <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400" />
               <input
                 id="email"
                 type="email"
@@ -85,17 +78,11 @@ export default function AdminLoginPage() {
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="mb-2 block text-sm font-semibold text-neutral-700"
-            >
+            <label htmlFor="password" className="mb-2 block text-sm font-semibold text-neutral-700">
               Password
             </label>
             <div className="relative">
-              <Lock
-                size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400"
-              />
+              <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400" />
               <input
                 id="password"
                 type="password"

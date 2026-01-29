@@ -1,87 +1,78 @@
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-export const authOptions: NextAuthConfig = {
+export const authConfig: NextAuthConfig = {
   trustHost: true,
   providers: [
     Credentials({
-      name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const email =
-          typeof credentials?.email === "string" ? credentials.email.trim().toLowerCase() : undefined;
-        const password =
-          typeof credentials?.password === "string" ? credentials.password.trim() : undefined;
+        const email = credentials?.email as string | undefined;
+        const password = credentials?.password as string | undefined;
 
-        // Get admin credentials from Vercel environment variables (NEXT_PUBLIC_ prefix)
-        const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL?.trim().toLowerCase();
-        const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD?.trim();
+        const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+        const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
 
-        console.log("Login attempt:", { 
-          email, 
-          hasPassword: !!password, 
-          hasAdminEmail: !!adminEmail, 
-          hasAdminPassword: !!adminPassword 
+        console.log("Auth attempt:", { 
+          emailProvided: !!email, 
+          passwordProvided: !!password,
+          adminEmailSet: !!adminEmail,
+          adminPasswordSet: !!adminPassword
         });
 
         if (!adminPassword) {
-          console.error("NEXT_PUBLIC_ADMIN_PASSWORD not set");
+          console.error("NEXT_PUBLIC_ADMIN_PASSWORD not configured");
           return null;
         }
 
-        // Check credentials
-        if (adminEmail) {
-          if (email === adminEmail && password === adminPassword) {
-            console.log("Login success");
-            return {
-              id: "admin",
-              email: adminEmail,
-              name: "Admin",
-              role: "admin",
-            };
-          }
-        } else {
-          if (password === adminPassword) {
-            console.log("Login success (password only)");
-            return {
-              id: "admin",
-              email: "admin@brnorealestate.com",
-              name: "Admin",
-              role: "admin",
-            };
-          }
+        const emailMatch = !adminEmail || (email?.toLowerCase().trim() === adminEmail.toLowerCase().trim());
+        const passwordMatch = password?.trim() === adminPassword.trim();
+
+        if (emailMatch && passwordMatch) {
+          console.log("Auth success");
+          return {
+            id: "1",
+            name: "Admin",
+            email: adminEmail || "admin@brnorealestate.com",
+            role: "admin",
+          };
         }
 
-        console.log("Login failed");
+        console.log("Auth failed - credentials mismatch");
         return null;
       },
     }),
   ],
   pages: {
     signIn: "/admin/login",
-    error: "/admin/login",
-  },
-  session: {
-    strategy: "jwt",
-    maxAge: 24 * 60 * 60,
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.role = (user as any).role;
-        token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).id = token.id as string;
-        (session.user as any).role = token.role as string;
+        (session.user as any).role = token.role;
       }
       return session;
+    },
+    async authorized({ auth, request }) {
+      const isLoggedIn = !!auth?.user;
+      const isAdmin = (auth?.user as any)?.role === "admin";
+      const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
+      const isLoginPage = request.nextUrl.pathname === "/admin/login";
+
+      if (isAdminRoute && !isLoginPage) {
+        return isLoggedIn && isAdmin;
+      }
+
+      return true;
     },
   },
   secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET || "brno-fallback-secret-key-32characters",
