@@ -19,8 +19,12 @@ export function logout() {
 
 /**
  * Client-side check if user is authenticated
+ * Returns: { isAuthenticated: boolean, isLoading: boolean }
  */
-export function useIsAuthenticated(): boolean {
+export function useIsAuthenticated(): { isAuthenticated: boolean; isLoading: boolean } {
   const { data: session, status } = useSession();
-  return status === "authenticated" && session?.user?.role === "admin";
+  return {
+    isAuthenticated: status === "authenticated" && session?.user?.role === "admin",
+    isLoading: status === "loading",
+  };
 }

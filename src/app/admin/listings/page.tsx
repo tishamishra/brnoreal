@@ -16,9 +16,11 @@ export default function AllListingsPage() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated, isLoading: authLoading } = useIsAuthenticated();
 
   useEffect(() => {
+    if (authLoading) return;
+    
     if (!isAuthenticated) {
       router.push("/admin/login");
       return;
@@ -32,7 +34,7 @@ export default function AllListingsPage() {
     }
 
     loadData();
-  }, [router]);
+  }, [router, authLoading, isAuthenticated]);
 
   const handleDelete = async (slug: string, title: string) => {
     if (!confirm(`Are you sure you want to delete "${title}"? This action cannot be undone.`)) {
@@ -54,6 +56,14 @@ export default function AllListingsPage() {
       listing.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       listing.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (authLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return null;

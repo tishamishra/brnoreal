@@ -14,7 +14,7 @@ export default function AdminDashboardPage() {
   const router = useRouter();
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated, isLoading: authLoading } = useIsAuthenticated();
   const [stats, setStats] = useState({
     total: 0,
     featured: 0,
@@ -22,6 +22,9 @@ export default function AdminDashboardPage() {
   });
 
   useEffect(() => {
+    // Wait for auth to load before checking
+    if (authLoading) return;
+    
     if (!isAuthenticated) {
       router.push("/admin/login");
       return;
@@ -50,7 +53,16 @@ export default function AdminDashboardPage() {
     }
 
     loadData();
-  }, [router]);
+  }, [router, authLoading, isAuthenticated]);
+
+  // Show loading while auth is being checked
+  if (authLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return null;

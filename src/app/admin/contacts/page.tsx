@@ -25,16 +25,18 @@ export default function ContactsPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated, isLoading: authLoading } = useIsAuthenticated();
 
   useEffect(() => {
+    if (authLoading) return;
+    
     if (!isAuthenticated) {
       router.push("/admin/login");
       return;
     }
 
     loadSubmissions();
-  }, [router]);
+  }, [router, authLoading, isAuthenticated]);
 
   async function loadSubmissions() {
     setLoading(true);
@@ -133,6 +135,14 @@ export default function ContactsPage() {
   const newCount = submissions.filter((s) => s.status === "new").length;
   const readCount = submissions.filter((s) => s.status === "read").length;
   const repliedCount = submissions.filter((s) => s.status === "replied").length;
+
+  if (authLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return null;

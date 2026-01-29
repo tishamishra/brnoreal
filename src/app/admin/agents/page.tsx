@@ -25,16 +25,18 @@ export default function AgentsPage() {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated, isLoading: authLoading } = useIsAuthenticated();
 
   useEffect(() => {
+    if (authLoading) return;
+    
     if (!isAuthenticated) {
       router.push("/admin/login");
       return;
     }
 
     loadAgents();
-  }, [router]);
+  }, [router, authLoading, isAuthenticated]);
 
   async function loadAgents() {
     setLoading(true);
@@ -99,6 +101,14 @@ export default function AgentsPage() {
       agent.region.toLowerCase().includes(searchTerm.toLowerCase()) ||
       agent.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (authLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return null;

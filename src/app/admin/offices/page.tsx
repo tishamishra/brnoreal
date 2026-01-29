@@ -23,16 +23,18 @@ export default function OfficesPage() {
   const [offices, setOffices] = useState<Office[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated, isLoading: authLoading } = useIsAuthenticated();
 
   useEffect(() => {
+    if (authLoading) return;
+    
     if (!isAuthenticated) {
       router.push("/admin/login");
       return;
     }
 
     loadOffices();
-  }, [router]);
+  }, [router, authLoading, isAuthenticated]);
 
   async function loadOffices() {
     setLoading(true);
@@ -97,6 +99,14 @@ export default function OfficesPage() {
       office.region.toLowerCase().includes(searchTerm.toLowerCase()) ||
       office.address.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (authLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return null;

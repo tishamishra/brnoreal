@@ -14,7 +14,7 @@ export default function NewListingPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated, isLoading: authLoading } = useIsAuthenticated();
   const [agents, setAgents] = useState<Array<{ id: string; name: string; title: string }>>([]);
   const [formData, setFormData] = useState({
     title: "",
@@ -40,6 +40,8 @@ export default function NewListingPage() {
   });
 
   useEffect(() => {
+    if (authLoading) return;
+    
     if (!isAuthenticated) {
       router.push("/admin/login");
       return;
@@ -61,7 +63,15 @@ export default function NewListingPage() {
     }
 
     loadAgents();
-  }, [router]);
+  }, [router, authLoading, isAuthenticated]);
+
+  if (authLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return null;
